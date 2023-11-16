@@ -1,4 +1,5 @@
 const nodemailer = require('nodemailer');
+require('dotenv').config();
 
 const sendMail = async (type, args, email) => {
     try {
@@ -8,13 +9,16 @@ const sendMail = async (type, args, email) => {
 
         // create reusable transporter object using the default SMTP transport
         let transporter = nodemailer.createTransport({
-            host: "smtp.anatra.o2switch.net",
-            port: 465,
+            host: "mail.jeda1059.odns.fr",
+            port: 26,
             secure: false,
             auth: {
-                user: "mspr@jeda1059.odns.fr", // generated ethereal user
-                pass: "Mspr8523.", // generated ethereal password
+                user: process.env.EMAIL_SMTP, // generated ethereal user
+                pass: process.env.PASSWORD_SMTP, // generated ethereal password
             },
+            tls: {
+                rejectUnauthorized: false
+            }
         });
 
         let info;

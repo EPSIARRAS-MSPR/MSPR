@@ -35,13 +35,6 @@ exports.SignUp = async (req, res) => {
             });
         }
 
-        // if (!usernameRegex.test(username)) {
-        //     return res.status(400).json({
-        //         error: true,
-        //         message: "Le nom d'utilisateur doit contenir au moins 2 caractères et ne doit pas contenir de caractères spéciaux."
-        //     });
-        // }
-
         const isExist = await User.findOne({ where: { [Op.or]: [{ email: email }, { username: username }] } });
 
         if (isExist) {
@@ -53,20 +46,20 @@ exports.SignUp = async (req, res) => {
 
         const encodedPassword = await encryptPassword(password);
         // Générer un code à 6 chiffres
-        // const code = Math.floor(100000 + Math.random() * 900000);
+        const code = Math.floor(100000 + Math.random() * 900000);
 
         const userData = {
             username: username,
             email: email,
             password: encodedPassword,
-            // emailVerificationCode: code,
-            // // Rajouter 15 minutes à la date actuelle
-            // emailVerificationCodeExpiration: new Date(Date.now() + 15 * 60 * 1000)
+            emailVerificationCode: code,
+            // Rajouter 15 minutes à la date actuelle
+            emailVerificationCodeExpiration: new Date(Date.now() + 15 * 60 * 1000),
             isActive: true
         }
 
         // Envoi de l'email de vérification
-        // await sendMail("accountVerification", { code: code }, email);
+        await sendMail("accountVerification", { code: code }, email);
 
         await new User(userData).save();
         return res.status(201).json({
@@ -173,14 +166,14 @@ exports.ResendVerification = async (req, res) => {
             });
         }
         // Vérifier si ça fait moins de 5 minutes
-        // const expirationDate = user.emailVerificationCodeExpiration.setTime(user.emailVerificationCodeExpiration - ((5 * 60) * 1000));
+        const expirationDate = user.emailVerificationCodeExpiration.setTime(user.emailVerificationCodeExpiration - ((5 * 60) * 1000));
 
-        // if (expirationDate < new Date()) {
-        //     return res.status(401).json({
-        //         error: true,
-        //         message: "Veuillez attendre 5 minutes avant d'envoyer un nouveau code."
-        //     });
-        // }
+        if (expirationDate < new Date()) {
+            return res.status(401).json({
+                error: true,
+                message: "Veuillez attendre 5 minutes avant d'envoyer un nouveau code."
+            });
+        }
 
 
         // Générer un code à 6 chiffres
