@@ -17,4 +17,10 @@ router.post('/resend-verification', userController.ResendVerification);
 
 // Get profile
 router.get('/profile', authenticateUser, userController.GetProfile);
+
+// Update
+router.patch('/update', authenticateUser, userController.Update);
+
+// Delete
+router.delete('/delete', authenticateUser, userController.Delete);
 module.exports = router;

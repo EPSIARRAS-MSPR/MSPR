@@ -294,3 +294,104 @@ exports.GetProfile = async (req, res) => {
         });
     }
 }
+
+exports.Delete = async (req, res) => {
+    try {
+        const { id } = req.decoded;
+
+        const user = await User.findOne({ where: { id: id } });
+        if (!user) {
+            return res.status(404).json({
+                error: true,
+                message: "L'utilisatuer est introuvable."
+            });
+        }
+
+        await user.destroy();
+        return res.status(200).json({
+            error: true,
+            message: "L'utilisateur a bien été supprimé."
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            error: true,
+            message: "Une erreur est survenue, veuillez réessayer plus tard."
+        });
+    }
+}
+
+exports.Update = async (req, res) => {
+    try {
+        const { email, password, username, id} = req.body;
+        const emailRegex = /^[a-zA-Z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$/i;
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/i;
+        
+        if (!id || isNaN(id)) {
+            return res.status(400).json({
+                error: true,
+                message: "Requête invalide."
+            });
+        }
+
+        
+        
+        const user = await User.findOne({ where: { id: id } });
+
+        if (!user) {
+            return res.status(404).json({
+                error: true,
+                message: "L'utilisateur est introuvable."
+            });
+        }
+        
+        if (email != null) {
+
+            if (!emailRegex.test(email)) {
+                return res.status(400).json({
+                    error: true,
+                    message: "L'adresse email est invalide."
+                });
+            }
+        }
+            
+        if (password != null) {
+
+            if (!passwordRegex.test(password)) {
+                return res.status(400).json({
+                    error: true,
+                    message: "Le mot de passe doit contenir au moins 8 caractères dont une majuscule, une minuscule, un chiffre et un caractère spécial."
+                });
+            }
+        }
+            
+        const isExist = await User.findOne({ where: { [Op.or]: [{ email: email }, { username: username }] } });
+
+        if (isExist) {
+            return res.status(409).json({
+                error: true,
+                message: "L'utilisateur existe déjà."
+            });
+        }
+
+        const encodedPassword = await encryptPassword(password);
+        
+        const userData = {
+            email: email ? email : user.email,
+            password: encryptPassword(password) ? password : user.password,
+            username: username ? username : user.username
+        }
+
+        await user.update(userData);
+
+        return res.status(200).json({
+            error: false,
+            message: "L'utilisateur a bien été mis à jour."
+        });
+    } catch (error) {
+        return res.status(500).json({
+            error: true,
+            message: error
+        });
+    }
+}
