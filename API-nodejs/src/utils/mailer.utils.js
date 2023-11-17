@@ -28,11 +28,11 @@ const sendMail = async (type, args, email) => {
 
             // send mail with defined transport object
             info = await transporter.sendMail({
-                from: '"Arosaje email 👻" <arosaje@plant.com>', // sender address
+                from: '"MyAPI 👻" <myapi@example.com>', // sender address
                 to: email, // list of receivers
-                subject: "VALIDATION ✔", // Subject line
-                text: `Votre code de vérification est : ${code}.`, // plain text body
-                html: `<b>Votre code de vérification : ${code}.</b>`, // html body
+                subject: "Account verification ✔", // Subject line
+                text: `Your account verification code is : ${code}.`, // plain text body
+                html: `<b>Your account verification code is : ${code}.</b>`, // html body
             });
 
         }

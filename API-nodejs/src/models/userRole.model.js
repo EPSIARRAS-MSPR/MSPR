@@ -17,7 +17,7 @@ UserRole.init({
     },
 }, {
     sequelize,
-    modelName: 'UserRole',
+    modelName: 'userRole',
     tableName: 'users_roles'
 });
 

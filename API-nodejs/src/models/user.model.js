@@ -40,7 +40,7 @@ User.init({
       userRole: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        defaultValue: 0,
+        defaultValue: 1,
     },
       accessToken: {
         type: DataTypes.TEXT('long'),
