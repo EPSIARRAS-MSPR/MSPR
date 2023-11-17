@@ -16,5 +16,5 @@ router.post('/verify', userController.VerifyAccount);
 router.post('/resend-verification', userController.ResendVerification);
 
 // Get profile
-router.post('/profile', authenticateUser(0), userController.GetProfile);
+router.get('/profile', authenticateUser, userController.GetProfile);
 module.exports = router;

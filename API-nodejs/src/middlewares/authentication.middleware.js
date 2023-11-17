@@ -2,7 +2,7 @@ const User = require('../models/user.model');
 const jwt = require('jsonwebtoken');
 
 
-const authenticateUser = (minRank = 0) => async (req, res, next) => {
+const authenticateUser = async (req, res, next) => {
     try {
         // Récupérer le token d'authentification dans l'entête de la requête
         const authorizationHeader = req.headers.authorization;
