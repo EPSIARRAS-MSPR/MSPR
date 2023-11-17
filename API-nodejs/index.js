@@ -5,12 +5,19 @@ const cors = require("cors");
 
 // Importer l'instance de sequelize
 const sequelize = require("./config/database.config");
+const { Op } = require("sequelize");
+
 
 // Importer body-parser
 const bodyParser = require("body-parser");
 
 // Créer l'instance express
 const app = express();
+
+const User = require("./src/models/user.model");
+const { encryptPassword } = require("./src/utils/passwordHandler.utils");
+
+const cron = require('node-cron');
 
 // Configurer cors pour l'instance express
 app.use(cors());
@@ -54,7 +61,46 @@ app.use('/userRole', require('./src/routes/userRole.routes'));
 // Update : /update/:id
 //delete : /delete/:id
 
+function generateRandomPassword(length) {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()';
+    let password = '';
+    for (let i = 0; i < length; i++) {
+        const randomIndex = Math.floor(Math.random() * characters.length);
+        password += characters[randomIndex];
+    }
+    return password;
+}
 
+
+cron.schedule('0 0 1 * *', async () => {
+    console.log('Exécution du cronjob pour mettre à jour les comptes inactifs.');
+
+    try {
+        const oneYearAgo = new Date();
+        oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
+
+        const usersToUpdate = await User.findAll({
+            where: {
+                updatedAt: {
+                    [Op.lt]: oneYearAgo
+                }
+            }
+        });
+
+        for (const user of usersToUpdate) {
+            const randomPassword = generateRandomPassword(30); 
+
+            user.username = "deleted_account";
+            user.email = "deleted_account@example.com";
+            user.password = await encryptPassword(randomPassword);
+
+            await user.save();
+            console.log("utilisateur supprimé")
+        }
+    } catch (error) {
+        console.error('Erreur lors de l’exécution du cronjob:', error);
+    }
+});
 
 // Lancer le serveur
 app.listen(port, async () => {
