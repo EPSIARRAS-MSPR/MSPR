@@ -37,6 +37,10 @@ app.use('/posts', require('./src/routes/post.routes'));
 // GetById : /posts/:id
 // Delete : /posts/delete
 
+// Answer routes
+app.use('/answer', require('./src/routes/answer.routes'));
+
+
 // Users routes
 app.use('/users', require('./src/routes/user.routes'));
 // SignUp : /users/signup
