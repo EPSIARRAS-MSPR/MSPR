@@ -19,8 +19,8 @@ module.exports = {
 
     // Ajout des rôles d'utilisateur et d'administrateur
     await queryInterface.bulkInsert('users_roles', [
-      { label: 'Utilisateur', createdAt: new Date(), updatedAt: new Date() }, // ID automatique
-      { label: 'Administrateur', createdAt: new Date(), updatedAt: new Date() } // ID automatique
+      { label: 'utilisateur', createdAt: new Date(), updatedAt: new Date() },
+      { label: 'administrateur', createdAt: new Date(), updatedAt: new Date() }
     ]);
   },
 

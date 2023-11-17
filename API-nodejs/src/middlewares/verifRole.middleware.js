@@ -8,7 +8,7 @@ const checkRoles = (roles) => async (req, res, next) => {
             return next();
         }
 
-        const { accessToken } = req.user;
+        const { accessToken } = req.decoded;
 
         if (!accessToken || accessToken === '') {
             return res.status(401).json({
@@ -23,6 +23,7 @@ const checkRoles = (roles) => async (req, res, next) => {
                 exclude: ["password", "emailVerificationCode", "emailVerificationCodeExpiration"]
             }
         });
+
 
         if (!isUserExists) {
             return res.status(401).json({

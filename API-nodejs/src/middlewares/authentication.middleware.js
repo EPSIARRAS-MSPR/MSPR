@@ -50,7 +50,8 @@ const authenticateUser = async (req, res, next) => {
             email: user.email,
             firstName: user.firstName,
             lastName: user.lastName,
-            isActive: user.isActive
+            isActive: user.isActive,
+            accessToken: user.accessToken,
         }
 
         // Si le token est valide, on passe à la fonction suivante
