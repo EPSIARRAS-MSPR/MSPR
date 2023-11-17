@@ -34,7 +34,7 @@ const authenticateUser = async (req, res, next) => {
 
         // Si l'utilisateur existe, on vérifie si le token d'authentification est valide
         // Si le token n'est pas valide, retourner une erreur
-        const result = await jwt.verify(accessToken, "LKKJSDFEFKONERLNERLNK", { expiresIn: "1h" });
+        const result = await jwt.verify(accessToken, "LKKJSDFEFKONERLNERLNK", { expiresIn: "5h" });
 
         // Si le token n'est pas valide, retourner une erreur
         if (!result) {
