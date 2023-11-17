@@ -9,9 +9,9 @@ const sendMail = async (type, args, email) => {
 
         // create reusable transporter object using the default SMTP transport
         let transporter = nodemailer.createTransport({
-            host: "mail.jeda1059.odns.fr",
-            port: 26,
-            secure: false,
+            host: "anatra.o2switch.net",
+            port: 465,
+            secure: true,
             auth: {
                 user: process.env.EMAIL_SMTP, // generated ethereal user
                 pass: process.env.PASSWORD_SMTP, // generated ethereal password
