@@ -50,6 +50,18 @@ module.exports = {
         type: Sequelize.TEXT('long'),
         allowNull: true,
       },
+      userRole: {
+        type:Sequelize.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
+        references: {
+          model: 'users_roles',
+          key: 'id'
+        },
+        onUpdate: 'cascade',
+        onDelete: 'cascade'
+      },
+
       // Les champs createdAt et updatedAt sont des dates non nulles, ils sont utilisés pour stocker la date de création et de modification de l'utilisateur
       createdAt: {
         type: Sequelize.DATE,

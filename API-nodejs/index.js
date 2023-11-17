@@ -42,6 +42,15 @@ app.use('/users', require('./src/routes/user.routes'));
 // SignUp : /users/signup
 // SignIn : /users/signin
 
+// UserRole routes
+app.use('/userRole', require('./src/routes/userRole.routes'));
+// GetAll : /fetch/all
+// GetId : /fetch/:id
+// Create : /create
+// Update : /update/:id
+//delete : /delete/:id
+
+
 
 // Lancer le serveur
 app.listen(port, async () => {

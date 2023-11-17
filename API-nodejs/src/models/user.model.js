@@ -37,6 +37,11 @@ User.init({
         type: DataTypes.DATE,
         allowNull: true,
       },
+      userRole: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
+    },
       accessToken: {
         type: DataTypes.TEXT('long'),
         allowNull: true,

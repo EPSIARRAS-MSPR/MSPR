@@ -55,7 +55,7 @@ exports.SignUp = async (req, res) => {
             emailVerificationCode: code,
             // Rajouter 15 minutes à la date actuelle
             emailVerificationCodeExpiration: new Date(Date.now() + 15 * 60 * 1000),
-            isActive: true
+            isActive: false
         }
 
         // Envoi de l'email de vérification
