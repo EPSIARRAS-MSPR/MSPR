@@ -6,7 +6,6 @@ const authenticateUser = async (req, res, next) => {
     try {
         // Récupérer le token d'authentification dans l'entête de la requête
         const authorizationHeader = req.headers.authorization;
-        // console.log("Rank minimum :", minRank)
         // Vérifier si le token existe dans l'entête de la requête
         if (!authorizationHeader || !authorizationHeader.split(' ')[1]) {
             // Si le token n'existe pas, retourner une erreur
@@ -34,7 +33,7 @@ const authenticateUser = async (req, res, next) => {
 
         // Si l'utilisateur existe, on vérifie si le token d'authentification est valide
         // Si le token n'est pas valide, retourner une erreur
-        const result = await jwt.verify(accessToken, "LKKJSDFEFKONERLNERLNK", { expiresIn: "5h" });
+        const result = await jwt.verify(accessToken, process.env.REFRESH_TOKEN_SECRET, { expiresIn: "5h" });
 
         // Si le token n'est pas valide, retourner une erreur
         if (!result) {

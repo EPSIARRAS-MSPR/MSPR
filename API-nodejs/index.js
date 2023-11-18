@@ -16,6 +16,7 @@ const app = express();
 
 const User = require("./src/models/user.model");
 const { encryptPassword } = require("./src/utils/passwordHandler.utils");
+const refreshAuthToken = require("./src/middlewares/refreshAuthToken");
 
 const cron = require('node-cron');
 
@@ -36,7 +37,7 @@ app.get('/', (req, res) => {
 });
 
 
-// Posts routes
+// Posts routes 
 app.use('/posts', require('./src/routes/post.routes'));
 // Create : /posts/create
 // Update : /posts/update
@@ -52,6 +53,8 @@ app.use('/answer', require('./src/routes/answer.routes'));
 app.use('/users', require('./src/routes/user.routes'));
 // SignUp : /users/signup
 // SignIn : /users/signin
+
+app.post('/refresh-token', refreshAuthToken);
 
 // UserRole routes
 app.use('/userRole', require('./src/routes/userRole.routes'));
